@@ -1,0 +1,9 @@
+.login-title {
+    text-align: center;
+}
+
+.input-container,
+.submit-container {
+    display: flex;
+    flex-direction: column;
+}
