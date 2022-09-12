@@ -1,4 +1,24 @@
+.login-section {
+    padding-top: 2rem;
+}
+
+.login-img-container {
+    display: flex;
+    justify-content: center;
+}
+
+.login-container {
+    max-width: 500px;
+    margin-inline: auto;
+    padding: 3rem 3rem 1rem;
+    border-radius: 10px;
+    background: linear-gradient(to bottom, #2282a0, #a8d9e9);
+    color: #fff;
+}
+
 .login-title {
+    margin: 4rem 0;
+    font-size: 2rem;
     text-align: center;
 }
 
@@ -6,4 +26,66 @@
 .submit-container {
     display: flex;
     flex-direction: column;
+}
+
+.input-container {
+    margin: 0.5rem 0;
+}
+
+.input-container label {
+    margin: 0.4rem 0;
+    padding-left: 0.3rem;
+    font-size: 1.2rem;
+}
+
+.input-container input {
+    min-height: 2.5rem;
+    padding-left: 0.6rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-family: var(--mainFont);
+}
+
+.input-container input::placeholder {
+    font-size: 0.8rem;
+    color: #9f9d9d;
+}
+
+.input-container input:focus {
+    outline: none;
+}
+
+.input-error {
+    margin: 0.2rem 0;
+}
+
+.submit-container {
+    margin: 4rem 0;
+}
+
+.submit-btn {
+    display: inline-block;
+    margin: 0 auto;
+    padding: 1.2rem 3.8rem;
+    border: none;
+    border-radius: 40px;
+    font-size: 1.2rem;
+    color: #2462bf;
+    cursor: pointer;
+}
+
+.register-link {
+    font-size: 0.8rem;
+}
+
+.register-link p {
+    margin: 0.3rem 0;
+    color: #4d89c0;
+}
+
+.register-link .link {
+    color: #30b8e3;
+    font-weight: 700;
+    text-decoration: none;
 }
