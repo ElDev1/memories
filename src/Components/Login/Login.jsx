@@ -4,7 +4,6 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { auth } from '../../services/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import Swal from 'sweetalert2';
 import { useLoginErrors } from './useLoginErrors';
 
 const Login = () => {
