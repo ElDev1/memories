@@ -1,15 +1,40 @@
 import './Login.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { auth } from '../../services/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import Swal from 'sweetalert2';
+import { useLoginErrors } from './useLoginErrors';
 
 const Login = () => {
+    // const navigate = useNavigate();
+    const { loginErrors, logErrors } = useLoginErrors();
     const initialValues = {
         email: '',
         password: ''
     };
 
-    const onSubmit = values => console.log(values);
+    const onSubmit = () => {
+        signInWithEmailAndPassword(auth, values.email, values.password)
+            .then(userCredential => {
+                const user = userCredential.user;
+                localStorage.setItem('logged', true);
+                // Se redirige a las memories del usuario que se registra
+                // navigate('/');
+            })
+            .catch(error => {
+                if (error.code === logErrors.WRONG_PASS)
+                    loginErrors('Wrong password', 'error');
+                if (error.code === logErrors.USER_NOT_FOUND)
+                    loginErrors('User not found', 'warning');
+                if (error.code === logErrors.TOO_MANY_REQUESTS)
+                    loginErrors(
+                        'Too many requests, access to this account has been temporarily disabled',
+                        'warning'
+                    );
+            });
+    };
 
     const validationSchema = Yup.object({
         email: Yup.string()
