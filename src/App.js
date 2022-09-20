@@ -4,7 +4,7 @@ import Register from './Components/Register/Register';
 import { WorldMemories } from './pages/WorlMemories/WorldMemories';
 import { Error404 } from './Components/Error404/Error404';
 import { CreateMemories } from './pages/CreateMemories/CreateMemories';
-import { MyMemories } from './pages/MyMemories/MyMemories';
+import MyMemories from './pages/MyMemories/MyMemories';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 
 const RequireAuth = ({ children }) => {
@@ -16,8 +16,10 @@ const RequireAuth = ({ children }) => {
 
 
 function App() {
+    const location = useLocation()
+
     return (
-        <Routes>
+        <Routes location={location} key={location.pathname}>
             <Route 
                 path='/'
                 element={
@@ -26,18 +28,20 @@ function App() {
                     </RequireAuth>} 
             />
             <Route 
-                path='/creatememories'
-                element={
-                    <RequireAuth>
-                        <CreateMemories />
-                    </RequireAuth>} 
-            />
-             <Route 
                 path='/mymemories'
                 element={
                     <RequireAuth>
                         <MyMemories />
-                    </RequireAuth>} 
+                    </RequireAuth>
+                } 
+            /> 
+            <Route 
+                path='/creatememories' 
+                element={
+                    <RequireAuth>
+                        <CreateMemories />
+                    </RequireAuth>
+                } 
             />
             <Route
                 path='/login'
@@ -48,7 +52,7 @@ function App() {
                 element={<Register />}
             />
             <Route
-                path='*'
+                path="*"
                 element={<Error404 />}
             />
         </Routes>

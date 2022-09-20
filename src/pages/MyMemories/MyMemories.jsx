@@ -1,7 +1,9 @@
 import React from 'react'
 
-export const MyMemories = () => {
+const MyMemories = () => {
   return (
     <div>MyMemories</div>
   )
 }
+
+export default MyMemories
