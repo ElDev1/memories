@@ -4,7 +4,7 @@ import Register from './Components/Register/Register';
 import { WorldMemories } from './pages/WorlMemories/WorldMemories';
 import { Error404 } from './Components/Error404/Error404';
 import { CreateMemories } from './pages/CreateMemories/CreateMemories';
-import MyMemories from './pages/MyMemories/MyMemories';
+import { MyMemories } from './pages/MyMemories/MyMemories';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 
 const RequireAuth = ({ children }) => {

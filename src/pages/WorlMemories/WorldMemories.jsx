@@ -1,8 +1,10 @@
-import React from 'react'
+import { NavBar } from "../../Components/NavBar/NavBar"
 
 export const WorldMemories = () => {
   return (
-    <div>WorldMemories</div>
+    <div>
+      <NavBar />
+    </div>
   )
 }
 
