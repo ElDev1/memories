@@ -1,0 +1,25 @@
+.logo-image {
+  width: 96px;
+  height: 86px;
+}
+ul {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+a {
+  text-decoration: none;
+  color: #2462bf;
+}
+.nav-paths {
+  width: 100vh;
+  display: flex;
+  padding: 10px 30px;
+  align-items: center;
+  justify-content: space-between;
+}
