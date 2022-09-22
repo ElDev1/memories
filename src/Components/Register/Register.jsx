@@ -1,15 +1,37 @@
 import './Register.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { auth } from '../../services/firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import Swal from 'sweetalert2';
 
 const Register = () => {
+    // const navigate = useNavigate();
     const initialValues = {
         email: '',
         password: ''
     };
 
-    const onSubmit = values => console.log(values);
+    const onSubmit = () => {
+        createUserWithEmailAndPassword(auth, values.email, values.password)
+            .then(userCredential => {
+                const user = userCredential.user;
+                localStorage.setItem('logged', true);
+                // Se redirige a las memories del usuario que se registra
+                // navigate('/');
+            })
+            .catch(error => {
+                if (error.code === 'auth/email-already-in-use') {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: `Ya existe una cuenta con el email ${values.email}`,
+                        icon: 'warning',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            });
+    };
 
     const validationSchema = Yup.object({
         email: Yup.string()
