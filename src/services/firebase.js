@@ -8,6 +8,7 @@ import {
     doc
 } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+import { getStorage, ref, uploadBytes } from 'firebase/storage'
 
 const { REACT_APP_API_KEY } = process.env;
 
@@ -22,10 +23,11 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore();
+
 export const auth = getAuth(app);
 
-export const createMemorie = (title, text, tags, image) => {
-    addDoc(collection(db, 'memoriesList'), { title, text, tags, image });
+export const createMemorie = (title, text, tags, image, createdBy) => {
+    addDoc(collection(db, 'memoriesList'), { title, text, tags, image, createdBy, date : new Date(), likes: 0 });
 };
 
 export const getMemories = () => {
@@ -41,3 +43,12 @@ export const getMemories = () => {
 };
 
 export const deleteMemorie = id => deleteDoc(doc(db, 'memoriesList', id));
+
+export const storage = getStorage(app)
+
+export const uploadFile = (file) => {
+    const storageRef = ref(storage, 'image')
+    uploadBytes(storageRef, file).then(snapshot => {
+        console.log(snapshot)
+    })
+}
