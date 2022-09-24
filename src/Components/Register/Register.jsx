@@ -7,7 +7,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import Swal from 'sweetalert2';
 
 const Register = () => {
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const initialValues = {
         email: '',
         password: ''
@@ -18,8 +18,9 @@ const Register = () => {
             .then(userCredential => {
                 const user = userCredential.user;
                 localStorage.setItem('logged', true);
+                localStorage.setItem('userName', user)
                 // Se redirige a las memories del usuario que se registra
-                // navigate('/');
+                navigate('/');
             })
             .catch(error => {
                 if (error.code === 'auth/email-already-in-use') {

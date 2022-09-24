@@ -7,7 +7,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useLoginErrors } from './useLoginErrors';
 
 const Login = () => {
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const { loginErrors, logErrors } = useLoginErrors();
     const initialValues = {
         email: '',
@@ -19,8 +19,9 @@ const Login = () => {
             .then(userCredential => {
                 const user = userCredential.user;
                 localStorage.setItem('logged', true);
+                localStorage.setItem('useName', user)
                 // Se redirige a las memories del usuario que se registra
-                // navigate('/');
+                navigate('/');
             })
             .catch(error => {
                 if (error.code === logErrors.WRONG_PASS)
@@ -92,7 +93,7 @@ const Login = () => {
                         </button>
                     </div>
                     <div className='register-link'>
-                        <p>Don't have an account yet</p>
+                        <p>Not a member?</p>
                         <Link className='link' to='/register'>
                             register
                         </Link>
