@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import { auth } from '../../services/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useLoginErrors } from './useLoginErrors';
+import { getUsers } from '../../services/firebase';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -18,8 +19,13 @@ const Login = () => {
         signInWithEmailAndPassword(auth, values.email, values.password)
             .then(userCredential => {
                 const user = userCredential.user;
+                getUsers().then(data => {
+                    const userName = data.find((item) => user.email === item.email)
+                    console.log(userName)
+                    localStorage.setItem("userName", userName.username)
+                })
                 localStorage.setItem('logged', true);
-                localStorage.setItem('useName', user)
+                localStorage.setItem('email', user.email)
                 // Se redirige a las memories del usuario que se registra
                 navigate('/');
             })
@@ -64,7 +70,6 @@ const Login = () => {
                             onBlur={handleBlur}
                             value={values.email}
                             placeholder='Type your email'
-                            required
                         />
                         {errors.email && touched.email ? (
                             <div className='input-error'>{errors.email}</div>
@@ -80,7 +85,6 @@ const Login = () => {
                             onBlur={handleBlur}
                             value={values.password}
                             placeholder='Type your password'
-                            required
                         />
                         {errors.password && touched.password ? (
                             <div className='input-error'>{errors.password}</div>
