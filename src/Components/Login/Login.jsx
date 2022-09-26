@@ -44,8 +44,7 @@ const Login = () => {
     });
 
     const formik = useFormik({ initialValues, onSubmit, validationSchema });
-    const { handleSubmit, handleChange, handleBlur, values, errors, touched } =
-        formik;
+    const { handleSubmit, handleChange, handleBlur, values, errors, touched } = formik;
 
     return (
         <section className='login-section'>
