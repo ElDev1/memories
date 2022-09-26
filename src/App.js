@@ -1,7 +1,4 @@
 import './App.css';
-<<<<<<< HEAD
-import PersonalMenu from './Components/PersonalMenu/PersonalMenu';
-=======
 import Login from './Components/Login/Login';
 import Register from './Components/Register/Register';
 import { WorldMemories } from './pages/WorlMemories/WorldMemories';
@@ -16,18 +13,12 @@ const RequireAuth = ({ children }) => {
     }
     return children
 }
->>>>>>> main
 
 
 function App() {
     const location = useLocation()
 
     return (
-<<<<<<< HEAD
-        <div className='App'>
-            <PersonalMenu/>
-        </div>
-=======
         <Routes location={location} key={location.pathname}>
             <Route 
                 path='/'
@@ -65,7 +56,6 @@ function App() {
                 element={<Error404 />}
             />
         </Routes>
->>>>>>> main
     )
 }
 
