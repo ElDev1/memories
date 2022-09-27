@@ -14,7 +14,7 @@ import { v4 } from 'uuid';
 const { REACT_APP_API_KEY } = process.env;
 
 const firebaseConfig = {
-    apiKey: REACT_APP_API_KEY,
+    apiKey: "AIzaSyCw2pdjBN2PxCGA_ZBJgNw3CbpYPU7HUy0",
     authDomain: 'memories-944af.firebaseapp.com',
     projectId: 'memories-944af',
     storageBucket: 'memories-944af.appspot.com',
