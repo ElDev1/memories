@@ -5,9 +5,10 @@ import * as Yup from 'yup';
 import { auth } from '../../services/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useLoginErrors } from './useLoginErrors';
+import { getUsers } from '../../services/firebase';
 
 const Login = () => {
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const { loginErrors, logErrors } = useLoginErrors();
     const initialValues = {
         email: '',
@@ -18,9 +19,15 @@ const Login = () => {
         signInWithEmailAndPassword(auth, values.email, values.password)
             .then(userCredential => {
                 const user = userCredential.user;
+                getUsers().then(data => {
+                    const userName = data.find((item) => user.email === item.email)
+                    console.log(userName)
+                    localStorage.setItem("userName", userName.username)
+                })
                 localStorage.setItem('logged', true);
+                localStorage.setItem('email', user.email)
                 // Se redirige a las memories del usuario que se registra
-                // navigate('/');
+                navigate('/');
             })
             .catch(error => {
                 if (error.code === logErrors.WRONG_PASS)
@@ -43,8 +50,7 @@ const Login = () => {
     });
 
     const formik = useFormik({ initialValues, onSubmit, validationSchema });
-    const { handleSubmit, handleChange, handleBlur, values, errors, touched } =
-        formik;
+    const { handleSubmit, handleChange, handleBlur, values, errors, touched } = formik;
 
     return (
         <section className='login-section'>
@@ -64,7 +70,6 @@ const Login = () => {
                             onBlur={handleBlur}
                             value={values.email}
                             placeholder='Type your email'
-                            required
                         />
                         {errors.email && touched.email ? (
                             <div className='input-error'>{errors.email}</div>
@@ -80,7 +85,6 @@ const Login = () => {
                             onBlur={handleBlur}
                             value={values.password}
                             placeholder='Type your password'
-                            required
                         />
                         {errors.password && touched.password ? (
                             <div className='input-error'>{errors.password}</div>
@@ -92,7 +96,7 @@ const Login = () => {
                         </button>
                     </div>
                     <div className='register-link'>
-                        <p>Don't have an account yet</p>
+                        <p>Not a member?</p>
                         <Link className='link' to='/register'>
                             register
                         </Link>

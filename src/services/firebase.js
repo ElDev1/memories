@@ -8,7 +8,8 @@ import {
     doc
 } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
-import { getStorage, ref, uploadBytes } from 'firebase/storage'
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { v4 } from 'uuid';
 
 const { REACT_APP_API_KEY } = process.env;
 
@@ -21,14 +22,30 @@ const firebaseConfig = {
     appId: '1:807187385306:web:e98ec1169c405e4ee1cee3'
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore();
+const app = initializeApp(firebaseConfig)
+const db = getFirestore()
 
-export const auth = getAuth(app);
+export const auth = getAuth(app)
 
 export const createMemorie = (title, text, tags, image, createdBy) => {
-    addDoc(collection(db, 'memoriesList'), { title, text, tags, image, createdBy, date : new Date(), likes: 0 });
+    addDoc(collection(db, 'memoriesList'), { title, text, tags, image, createdBy, date : new Date(), likes: 0, likedBy: [] })
 };
+
+export const createUsers = (username, email) => {
+    addDoc(collection(db, 'userlist'), {username, email})
+}
+
+export const getUsers = () => {
+    return getDocs(collection(db, 'userlist'))
+        .then(res => res.docs)
+        .then(res => {
+            const data = []
+            res.forEach(doc => {
+                data.push(doc.data())
+            })
+            return data
+        })
+}
 
 export const getMemories = () => {
     return getDocs(collection(db, 'memoriesList'))
@@ -42,13 +59,13 @@ export const getMemories = () => {
         });
 };
 
-export const deleteMemorie = id => deleteDoc(doc(db, 'memoriesList', id));
+export const deleteMemorie = id => deleteDoc(doc(db, 'memoriesList', id))
 
 export const storage = getStorage(app)
 
-export const uploadFile = (file) => {
-    const storageRef = ref(storage, 'image')
-    uploadBytes(storageRef, file).then(snapshot => {
-        console.log(snapshot)
-    })
+export const uploadFile =  async (file) => {
+    const storageRef = ref(storage, v4())
+    await uploadBytes(storageRef, file)
+    const url = await getDownloadURL(storageRef)
+    return url
 }

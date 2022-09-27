@@ -1,3 +1,7 @@
+body {
+    background-color: #CCF4F3;
+}
+
 .login-section {
     padding-top: 2rem;
 }
@@ -14,6 +18,7 @@
     border-radius: 10px;
     background: linear-gradient(to bottom, #2282a0, #a8d9e9);
     color: #fff;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
 .login-title {
@@ -30,6 +35,10 @@
 
 .input-container {
     margin: 0.5rem 0;
+}
+
+.input-container input {
+    color: grey;
 }
 
 .input-container label {
