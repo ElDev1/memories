@@ -14,9 +14,14 @@ export const CreateMemorieForm = () => {
         const tagsText = tags.current.value
         const tagsList = tagsText.trim().toLowerCase().split(',')
         const userName = localStorage.getItem("userName")
+        const email = localStorage.getItem('email')
+        const createdBy = {
+            userName,
+            email
+        }
         try {
             const result = await uploadFile(file)
-            createMemorie(values.title,values.text,tagsList,result, userName)
+            createMemorie(values.title,values.text,tagsList,result, createdBy)
             console.log(result)
         } catch (error) {
             console.error(error)

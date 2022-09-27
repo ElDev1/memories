@@ -15,10 +15,10 @@ export const WorldMemories = () => {
 
   console.log(memoriesList)
   return (
-    <div className="mt-20">
+    <div className="bg-sky-100">
       <NavBar />
-      <div className="flex">
-        <Sidebar></Sidebar>
+      <div className="flex mt-20">
+        <Sidebar />
         <CardsContainer memoriesList={memoriesList}/>
       </div>
     </div>
