@@ -76,14 +76,6 @@ export const Sidebar = () => {
             <li>
               <div className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-cyan-500 pr-6">
                 <div className="inline-flex justify-center items-center ml-4">
-                  <AiFillPicture />
-                  <span className="ml-2 text-sm tracking-wide truncate">My memories</span>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-cyan-500 pr-6">
-                <div className="inline-flex justify-center items-center ml-4">
                   <AiOutlineHeart />
                   <span className="ml-2 text-sm tracking-wide truncate">Your likes</span>
                 </div>

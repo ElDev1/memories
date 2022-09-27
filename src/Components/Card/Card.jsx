@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import { deleteMemorie } from "../../services/firebase";
 
-export const Card = ({createdBy, date, image, likedBy, likes, tags, text, title}) => {
+export const Card = ({createdBy, id, date, image, likedBy, likes, tags, text, title, myMemories}) => {
   const [count, setCount] = useState(0);
   console.log(date)
 
@@ -51,40 +52,42 @@ export const Card = ({createdBy, date, image, likedBy, likes, tags, text, title}
           <p className="text-white">{createdBy.userName}</p>
         </div>
       </div>
-      <div className="px-6 py-4">
-        <div className="font-bold text-xl mb-2">{title}</div>
-        <p className="text-gray-700 text-base">
-          {text}
-        </p>
-      </div>
-      <div>
-        <p></p>
-      </div>
-      <div className="px-6 pt-4 pb-2"> 
-        {tags.map(tag => <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#{tag}</span>)}
-      </div>
-      <div className="flex items-center justify-between">
-           <div className="flex text-sky-500">
-             <i
-               onClick={() => setCount(count + 1)}
-               className="fa-solid pl-1 fa-thumbs-up m-1 active:text-sky-200"
-             ></i>
-             <span className="m-1 text-sm">{count}</span>
-           </div>
-           <div>
-             {createdBy.userName === localStorage.getItem('userName') ? (
-                <>
-                  <button className="font-medium text-sm text-sky-600 p-1">
-                    Edit
-                  </button>
-                  <button className="font-medium text-sm text-red-600 p-1">
-                    Delete
-                  </button>
-                </>
-             ) : null 
-            }
-           </div>
-         </div>
+      <div className="">
+        <div className="px-6 py-4">
+          <div className="font-bold text-xl mb-2">{title}</div>
+          <p className="text-gray-700 text-base">
+            {text}
+          </p>
+        </div>
+        <div className="px-6 pt-4 pb-2"> 
+          {tags.map(tag => <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#{tag}</span>)}
+        </div>
+        <div className="flex items-center justify-between">
+            <div className="flex text-sky-500">
+              <i
+                onClick={() => setCount(count + 1)}
+                className="fa-solid pl-1 fa-thumbs-up m-1 active:text-sky-200"
+              ></i>
+              <span className="m-1 text-sm">{count}</span>
+            </div>
+            <div>
+              {myMemories ? (
+                  <>
+                    <button className="font-medium text-sm text-sky-600 p-1">
+                      Edit
+                    </button>
+                    <button 
+                        className="font-medium text-sm text-red-600 p-1"
+                        onClick={() => deleteMemorie(id)}    
+                    >
+                      Delete
+                    </button>
+                  </>
+              ) : null 
+              }
+            </div>
+          </div>
+        </div>
       </div>
   )
 }
