@@ -13,10 +13,10 @@ export const CreateMemorieForm = () => {
         console.log('enviando')
         const tagsText = tags.current.value
         const tagsList = tagsText.trim().toLowerCase().split(',')
-        
+        const userName = localStorage.getItem("userName")
         try {
             const result = await uploadFile(file)
-            createMemorie(values.title,values.text,tagsList,result,'testUser')
+            createMemorie(values.title,values.text,tagsList,result, userName)
             console.log(result)
         } catch (error) {
             console.error(error)

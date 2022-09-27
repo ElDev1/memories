@@ -27,8 +27,9 @@ const db = getFirestore()
 
 export const auth = getAuth(app)
 
-export const createMemorie = (title, text, tags, image, createdBy) => {
-    addDoc(collection(db, 'memoriesList'), { title, text, tags, image, createdBy, date : new Date(), likes: 0, likedBy: [] })
+export const createMemorie = (title, text, tags = [], image, createdBy) => {
+    const id = v4()
+    addDoc(collection(db, 'memoriesList'), {id, title, text, tags, image, createdBy, date : new Date(), likes: 0, likedBy: [] })
 };
 
 export const createUsers = (username, email) => {
