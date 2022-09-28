@@ -12,9 +12,6 @@ export const Card = ({createdBy, id, date, image, likedBy, likes, tags, text, ti
   useEffect(() => {
     const user = localStorage.getItem('email')
     const res = likedBy.find(userLike => userLike === user)
-    console.log('es user igual a likedby',user === likedBy[0])
-    console.log('respuesta',res)
-    console.log('likedBy', likedBy)
     if(res === user) {
       setAlreadyLiked(true)
     } else {
@@ -22,7 +19,6 @@ export const Card = ({createdBy, id, date, image, likedBy, likes, tags, text, ti
     }
   }, [])
 
-  console.log(alreadyLiked)
 
   const handleLike = () => {
     const user = localStorage.getItem('email')

@@ -17,7 +17,9 @@ export const WorldMemories = () => {
         setMemoriesList(data)
         setLoading(false)
       })
+
   }, [])
+
 
   console.log(memoriesList)
   return (
@@ -26,7 +28,7 @@ export const WorldMemories = () => {
       {
         loading ? (
           <div className="flex mt-20">
-            <Sidebar />
+            <Sidebar memoriesList={memoriesList} setMemoriesList={setMemoriesList} />
             <div className='p-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-5'>
               <Skeleton />
               <Skeleton />
@@ -37,7 +39,7 @@ export const WorldMemories = () => {
           </div>
         ) : (
           <div className="flex mt-20">
-            <Sidebar />
+            <Sidebar memoriesList={memoriesList} setMemoriesList={setMemoriesList} />
             <CardsContainer memoriesList={memoriesList}/>
           </div>
         )
