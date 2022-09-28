@@ -4,6 +4,8 @@ import {
     collection,
     addDoc,
     getDocs,
+    getDoc,
+    updateDoc,
     deleteDoc,
     doc
 } from 'firebase/firestore';
@@ -57,7 +59,11 @@ export const getMemories = () => {
             });
             return data;
         });
-};
+}
+
+export const getMemorie = (id) => getDoc(doc(db, "memoriesList", id))
+
+export const updateMemorie = (id, newFields) => updateDoc(doc(db, "memoriesList", id), newFields)
 
 export const deleteMemorie = id => deleteDoc(doc(db, 'memoriesList', id))
 

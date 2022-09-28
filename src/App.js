@@ -6,6 +6,7 @@ import { Error404 } from './Components/Error404/Error404';
 import { CreateMemories } from './pages/CreateMemories/CreateMemories';
 import { MyMemories } from './pages/MyMemories/MyMemories';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { EditMemorie } from './pages/EditMemorie/EditMemorie'
 
 const RequireAuth = ({ children }) => {
     if(!localStorage.getItem('logged')) {
@@ -40,6 +41,14 @@ function App() {
                 element={
                     <RequireAuth>
                         <CreateMemories />
+                    </RequireAuth>
+                } 
+            />
+             <Route 
+                path='/editmemorie' 
+                element={
+                    <RequireAuth>
+                        <EditMemorie />
                     </RequireAuth>
                 } 
             />

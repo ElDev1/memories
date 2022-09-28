@@ -1,13 +1,48 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { deleteMemorie } from "../../services/firebase";
+import { useNavigate } from "react-router-dom";
+import { updateMemorie } from "../../services/firebase";
+
 
 export const Card = ({createdBy, id, date, image, likedBy, likes, tags, text, title, myMemories, handleDelete}) => {
-  const [count, setCount] = useState(0);
-  console.log(date)
+  const [count, setCount] = useState(likes);
+  const [alreadyLiked, setAlreadyLiked] = useState(false)
+  const navigate = useNavigate()
 
-  //const [month, day, year] = [date.getMonth(), date.getDate(), date.getFullYear()];
+  useEffect(() => {
+    const user = localStorage.getItem('email')
+    const res = likedBy.find(userLike => userLike === user)
+    console.log('es user igual a likedby',user === likedBy[0])
+    console.log('respuesta',res)
+    console.log('likedBy', likedBy)
+    if(res === user) {
+      setAlreadyLiked(true)
+    } else {
+      setAlreadyLiked(false)
+    }
+  }, [])
 
-  //console.log(month, day, year)
+  console.log(alreadyLiked)
+
+  const handleLike = () => {
+    const user = localStorage.getItem('email')
+    const userAlreadyLiked = likedBy.find(userLike => userLike === user)
+    
+    if(userAlreadyLiked !== user && !alreadyLiked) {
+      const newLikedBy = [...likedBy]
+      newLikedBy.push(user)
+      setCount(count + 1)
+      updateMemorie(id, {likes:likes + 1, likedBy: newLikedBy})
+      setAlreadyLiked(true)
+    } 
+
+    if(alreadyLiked && userAlreadyLiked === user) {
+      const filteredLikedBy = likedBy.filter(userLike => userLike !== user)
+      setCount(count - 1)
+      updateMemorie(id, {likes: likes - 1, likedBy: filteredLikedBy})
+      setAlreadyLiked(false)
+    }
+  }
 
   return (
     // <div className="max-w-sm bg-white rounded-lg border border-gray-200 shadow-md">
@@ -63,9 +98,9 @@ export const Card = ({createdBy, id, date, image, likedBy, likes, tags, text, ti
           {tags.map(tag => <span key={tag} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#{tag}</span>)}
         </div>
         <div className="flex items-center justify-between">
-            <div className="flex text-sky-500">
+            <div className="flex text-sky-500" style={alreadyLiked ? {color:"green"} : {color:"skyBlue"} }>
               <i
-                onClick={() => setCount(count + 1)}
+                onClick={() => handleLike()}
                 className="fa-solid pl-1 fa-thumbs-up m-1 active:text-sky-200"
               ></i>
               <span className="m-1 text-sm">{count}</span>
@@ -73,8 +108,14 @@ export const Card = ({createdBy, id, date, image, likedBy, likes, tags, text, ti
             <div>
               {myMemories ? (
                   <>
-                    <button className="font-medium text-sm text-sky-600 p-1">
-                      Edit
+                    <button 
+                        className="font-medium text-sm text-sky-600 p-1"
+                        onClick={() => {
+                          navigate('/editmemorie')
+                          localStorage.setItem('memorieId', id)
+                        }}    
+                    >
+                      Change
                     </button>
                     <button 
                         className="font-medium text-sm text-red-600 p-1"
