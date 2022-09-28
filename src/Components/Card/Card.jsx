@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { deleteMemorie } from "../../services/firebase";
 
-export const Card = ({createdBy, id, date, image, likedBy, likes, tags, text, title, myMemories}) => {
+export const Card = ({createdBy, id, date, image, likedBy, likes, tags, text, title, myMemories, handleDelete}) => {
   const [count, setCount] = useState(0);
   console.log(date)
 
@@ -60,7 +60,7 @@ export const Card = ({createdBy, id, date, image, likedBy, likes, tags, text, ti
           </p>
         </div>
         <div className="px-6 pt-4 pb-2"> 
-          {tags.map(tag => <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#{tag}</span>)}
+          {tags.map(tag => <span key={tag} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#{tag}</span>)}
         </div>
         <div className="flex items-center justify-between">
             <div className="flex text-sky-500">
@@ -78,7 +78,10 @@ export const Card = ({createdBy, id, date, image, likedBy, likes, tags, text, ti
                     </button>
                     <button 
                         className="font-medium text-sm text-red-600 p-1"
-                        onClick={() => deleteMemorie(id)}    
+                        onClick={() => {
+                          deleteMemorie(id)
+                          handleDelete()
+                        }}    
                     >
                       Delete
                     </button>

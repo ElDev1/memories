@@ -28,8 +28,7 @@ const db = getFirestore()
 export const auth = getAuth(app)
 
 export const createMemorie = (title, text, tags = [], image, createdBy) => {
-    const id = v4()
-    addDoc(collection(db, 'memoriesList'), {id, title, text, tags, image, createdBy, date : new Date(), likes: 0, likedBy: [] })
+    addDoc(collection(db, 'memoriesList'), {title, text, tags, image, createdBy, date : new Date(), likes: 0, likedBy: [] })
 };
 
 export const createUsers = (username, email) => {
@@ -54,7 +53,7 @@ export const getMemories = () => {
         .then(res => {
             const data = [];
             res.forEach(doc => {
-                data.push(doc.data());
+                data.push({...doc.data(), id: doc.id});
             });
             return data;
         });

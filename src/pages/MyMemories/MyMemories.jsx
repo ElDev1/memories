@@ -15,16 +15,15 @@ export const MyMemories = () => {
       })
   }, [])
 
-  console.log(memoriesList)
 
   return (
-    <div className="bg-sky-100 h-full">
+    <div className="bg-sky-100">
       <NavBar />
       <div className="flex justify-center mt-20">
         <h1 className="mt-20 text-sky-600 font-semibold text-2xl">Your Memories</h1>
       </div>
       <div className="flex justify-center mt-20 bg-sky-100">
-        <CardsContainer memoriesList={memoriesList} myMemories={'true'}/>  
+        <CardsContainer memoriesList={memoriesList} myMemories={'true'} setMemoriesList={setMemoriesList}/>  
       </div>
     </div>
   )

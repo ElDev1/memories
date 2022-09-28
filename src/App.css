@@ -6,10 +6,12 @@
 
 body {
     font-family: var(--mainFont);
+    
 }
 
 #root {
     min-height: 100vh;
+    background-color: rgb(219, 242, 254);
 }
 
 @tailwind base;
