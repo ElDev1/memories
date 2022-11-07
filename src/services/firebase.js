@@ -4,6 +4,8 @@ import {
     collection,
     addDoc,
     getDocs,
+    getDoc,
+    updateDoc,
     deleteDoc,
     doc
 } from 'firebase/firestore';
@@ -27,8 +29,8 @@ const db = getFirestore()
 
 export const auth = getAuth(app)
 
-export const createMemorie = (title, text, tags, image, createdBy) => {
-    addDoc(collection(db, 'memoriesList'), { title, text, tags, image, createdBy, date : new Date(), likes: 0, likedBy: [] })
+export const createMemorie = (title, text, tags = [], image, createdBy) => {
+    addDoc(collection(db, 'memoriesList'), {title, text, tags, image, createdBy, date : new Date(), likes: 0, likedBy: [] })
 };
 
 export const createUsers = (username, email) => {
@@ -53,11 +55,15 @@ export const getMemories = () => {
         .then(res => {
             const data = [];
             res.forEach(doc => {
-                data.push(doc.data());
+                data.push({...doc.data(), id: doc.id});
             });
             return data;
         });
-};
+}
+
+export const getMemorie = (id) => getDoc(doc(db, "memoriesList", id))
+
+export const updateMemorie = (id, newFields) => updateDoc(doc(db, "memoriesList", id), newFields)
 
 export const deleteMemorie = id => deleteDoc(doc(db, 'memoriesList', id))
 

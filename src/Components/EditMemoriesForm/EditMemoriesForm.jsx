@@ -1,20 +1,23 @@
 import { useFormik } from 'formik';
 import * as Yup  from 'yup'
-import { uploadFile, createMemorie } from '../../services/firebase'
+import { uploadFile } from '../../services/firebase'
 import { useState, useRef } from 'react';
+import { updateMemorie } from '../../services/firebase';
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2'
 
-export const CreateMemorieForm = () => {
+
+export const EditMemoriesForm = () => {
 
     const [file, setFile] = useState(null)
-    const [tagInput, setTagInput] = useState('')
-    //const tags = useRef('')
+    const tags = useRef('')
 
+    const memorieId = localStorage.getItem('memorieId')
+    const navigate = useNavigate()
 
-    const onSubmit = async (e, {resetForm}) => {
-        console.log('enviando')
-        //const tagsText = tags.current.value
-        const tagsList = tagInput.trim().toLowerCase().split(',')
+    const onSubmit = async (e) => {
+        const tagsText = tags.current.value
+        const tagsList = tagsText.trim().toLowerCase().split(',')
         const userName = localStorage.getItem("userName")
         const email = localStorage.getItem('email')
         const createdBy = {
@@ -23,18 +26,13 @@ export const CreateMemorieForm = () => {
         }
         try {
             const result = await uploadFile(file)
-            createMemorie(values.title,values.text,tagsList,result, createdBy)
-            console.log(result)
+            updateMemorie(memorieId,{title:values.title, text:values.text, tags:tagsList, image:result, createdBy})
             Swal.fire({
-                position: 'center',
                 icon: 'success',
-                title: 'Memorie created',
-                showConfirmButton: false,
-                timer: 1500
+                title: 'Memorie changed',
+                text: '',
               })
-            setFile(null)
-            setTagInput('')
-            resetForm()
+            navigate('/mymemories')
         } catch (error) {
             console.error(error)
         }
@@ -61,7 +59,7 @@ export const CreateMemorieForm = () => {
         <div className="relative flex flex-col justify-center min-h-screen overflow-hidden ">
             <div className="bg-sky-600 w-full p-6 m-auto rounded-md shadow-xl shadow-green-600/40 ring-2 ring-cyan-600 lg:max-w-xl">
                 <h1 className="text-3xl font-semibold text-center text-white uppercase">
-                    Create your memorie
+                    Change your memorie
                 </h1>                
                 <form className="mt-6" onSubmit={handleSubmit}>
                     <div className="mb-2">
@@ -81,7 +79,7 @@ export const CreateMemorieForm = () => {
                                 focus:ring-indigo-200
                                 focus:ring-opacity-50
                             "
-                            placeholder="my college graduation..."
+                            placeholder={`title`}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.title}
@@ -109,7 +107,7 @@ export const CreateMemorieForm = () => {
                                 focus:ring-opacity-50
                             "
                             rows="5"
-                            placeholder='Tell us about...'
+                            placeholder={'Tell us about'}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.text}
@@ -138,8 +136,7 @@ export const CreateMemorieForm = () => {
                                 focus:ring-opacity-50
                             "
                             placeholder="College, Graduation, Education"
-                            value={tagInput}
-                            onChange={(e) => setTagInput(e.currentTarget.value)} 
+                            ref={tags} 
                         />
                         </label>
                     </div>
@@ -156,7 +153,7 @@ export const CreateMemorieForm = () => {
                             />
                         </label>
                     </div>
-                    <div className="mb-6">
+                    <div className="mb-6 flex">
                         <button
                             type="submit"
                             className="
@@ -169,9 +166,26 @@ export const CreateMemorieForm = () => {
                                 duration-150
                                 focus:shadow-outline
                                 hover:bg-cyan-800
+                                mr-1
                             "
                         >
-                            Create
+                            Change
+                        </button>
+                        <button
+                            onClick={() => navigate('/mymemories')}
+                            className="
+                                h-10
+                                px-5
+                                text-indigo-100
+                                bg-red-700
+                                rounded-lg
+                                transition-colors
+                                duration-150
+                                focus:shadow-outline
+                                hover:bg-red-800
+                            "
+                        >
+                            Cancel
                         </button>
                     </div>
                 </form>
