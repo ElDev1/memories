@@ -1,20 +1,28 @@
 import { AiFillPicture, AiOutlineTags } from 'react-icons/ai'
 import { AiOutlineUser } from 'react-icons/ai'
 import { AiOutlineHeart } from 'react-icons/ai'
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { getMemories } from '../../services/firebase'
 
 export const Sidebar = ( {memoriesList, setMemoriesList} ) => {
 
-  const searchTagInput = useRef('')
-  const searchNameInput = useRef('')
-
-  console.log(memoriesList, 'from sideBar')
+  const [tagInput, setTagInput] = useState('')
+  const [nameInput, setNameInput] = useState('')
 
   const handleFilterTags = (e) => {
     e.preventDefault()
-    const filteredMemories = memoriesList.filter(memorie => memorie.tags.includes(searchTagInput.current.value))
-    setMemoriesList(filteredMemories)
+
+    getMemories()
+    .then(res => {
+      setMemoriesList(res)
+      return memoriesList
+    })
+    .then((res) => {
+      console.log('lista de memorias', memoriesList)
+      const filteredMemories = res.filter(memorie => memorie.tags.includes(tagInput.toLowerCase()))
+      setMemoriesList(filteredMemories)  
+      setTagInput('')
+    })
   }
 
   const handleFilterLikes = () => {
@@ -31,9 +39,15 @@ export const Sidebar = ( {memoriesList, setMemoriesList} ) => {
 
   const handleFilterNames = (e) => {
     e.preventDefault()
-    const filteredMemories = memoriesList.filter(memorie => memorie.createdBy.userName.toLowerCase().includes(searchNameInput.current.value.toLowerCase()))
-    console.log(filteredMemories)
-    setMemoriesList(filteredMemories)
+
+    getMemories()
+    .then(data => {
+      setMemoriesList(data)
+    })
+    .then(() => {
+      const filteredMemories = memoriesList.filter(memorie => memorie.createdBy.userName.toLowerCase().includes(nameInput.toLowerCase()))
+      setMemoriesList(filteredMemories)      
+    })
   }
 
   const handleAllMemories = () => {
@@ -63,12 +77,20 @@ export const Sidebar = ( {memoriesList, setMemoriesList} ) => {
             </li>
             <li>
               <div className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-cyan-500 pr-6">
+                <div onClick={handleFilterLikes} className="inline-flex justify-center items-center ml-4 cursor-pointer">
+                  <AiOutlineHeart />
+                  <span className="ml-2 text-sm tracking-wide truncate">Your likes</span>
+                </div>
+              </div>
+            </li>
+            {/* <li className='focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-cyan-500'>
+              <div className="relative flex flex-row items-center h-11 pr-6">
                 <div className="inline-flex justify-center items-center ml-4">
                   <AiOutlineTags />
                   <span className="ml-2 text-sm tracking-wide truncate">Search by tags</span>
                 </div>
               </div>
-                <div className="pr-10 pl-3">
+                <div className="pr-10 pl-3 ">
                   <form onSubmit={handleFilterTags}>
                     <label>
                     <input
@@ -86,15 +108,15 @@ export const Sidebar = ( {memoriesList, setMemoriesList} ) => {
                             focus:ring-indigo-200
                             focus:ring-opacity-50
                         "
-                        ref={searchTagInput}
+                        value={tagInput}
+                        onChange={(e) => setTagInput(e.currentTarget.value)}
                     />
-                    <button type='submit'>Search</button>
                     </label>
                   </form>
               </div>
-            </li>
-            <li>
-              <div className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-cyan-500 pr-6">
+            </li> */}
+            <li className='focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-cyan-500'>
+              <div className="relative flex flex-row items-center h-11 pr-6">
                 <div className="inline-flex justify-center items-center ml-4">
                   <AiOutlineUser />
                   <span className="ml-2 text-sm tracking-wide truncate">Search by User Name</span>
@@ -118,19 +140,11 @@ export const Sidebar = ( {memoriesList, setMemoriesList} ) => {
                             focus:ring-indigo-200
                             focus:ring-opacity-50
                         "
-                        ref={searchNameInput}
+                        value={nameInput}
+                        onChange={(e) => setNameInput(e.currentTarget.value)}
                     />
                     </label>
-                    <button type='submit'>Search</button>
                   </form>
-              </div>
-            </li>
-            <li>
-              <div className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-cyan-500 pr-6">
-                <div onClick={handleFilterLikes} className="inline-flex justify-center items-center ml-4 cursor-pointer">
-                  <AiOutlineHeart />
-                  <span className="ml-2 text-sm tracking-wide truncate">Your likes</span>
-                </div>
               </div>
             </li>
           </ul>

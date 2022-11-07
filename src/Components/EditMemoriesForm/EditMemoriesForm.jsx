@@ -4,6 +4,8 @@ import { uploadFile } from '../../services/firebase'
 import { useState, useRef } from 'react';
 import { updateMemorie } from '../../services/firebase';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'
+
 
 export const EditMemoriesForm = () => {
 
@@ -25,7 +27,12 @@ export const EditMemoriesForm = () => {
         try {
             const result = await uploadFile(file)
             updateMemorie(memorieId,{title:values.title, text:values.text, tags:tagsList, image:result, createdBy})
-            console.log(result)
+            Swal.fire({
+                icon: 'success',
+                title: 'Memorie changed',
+                text: '',
+              })
+            navigate('/mymemories')
         } catch (error) {
             console.error(error)
         }
@@ -84,7 +91,7 @@ export const EditMemoriesForm = () => {
                     </div>
                     <div className="mb-2">
                         <label>
-                        <span className="text-white">Message</span>
+                        <span className="text-white">Message*</span>
                         <textarea
                             name="text"
                             className="

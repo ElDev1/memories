@@ -2,17 +2,19 @@ import { useFormik } from 'formik';
 import * as Yup  from 'yup'
 import { uploadFile, createMemorie } from '../../services/firebase'
 import { useState, useRef } from 'react';
+import Swal from 'sweetalert2'
 
 export const CreateMemorieForm = () => {
 
     const [file, setFile] = useState(null)
-    const tags = useRef('')
+    const [tagInput, setTagInput] = useState('')
+    //const tags = useRef('')
 
 
-    const onSubmit = async (e) => {
+    const onSubmit = async (e, {resetForm}) => {
         console.log('enviando')
-        const tagsText = tags.current.value
-        const tagsList = tagsText.trim().toLowerCase().split(',')
+        //const tagsText = tags.current.value
+        const tagsList = tagInput.trim().toLowerCase().split(',')
         const userName = localStorage.getItem("userName")
         const email = localStorage.getItem('email')
         const createdBy = {
@@ -23,6 +25,16 @@ export const CreateMemorieForm = () => {
             const result = await uploadFile(file)
             createMemorie(values.title,values.text,tagsList,result, createdBy)
             console.log(result)
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Memorie created',
+                showConfirmButton: false,
+                timer: 1500
+              })
+            setFile(null)
+            setTagInput('')
+            resetForm()
         } catch (error) {
             console.error(error)
         }
@@ -81,7 +93,7 @@ export const CreateMemorieForm = () => {
                     </div>
                     <div className="mb-2">
                         <label>
-                        <span className="text-white">Message</span>
+                        <span className="text-white">Message*</span>
                         <textarea
                             name="text"
                             className="
@@ -126,7 +138,8 @@ export const CreateMemorieForm = () => {
                                 focus:ring-opacity-50
                             "
                             placeholder="College, Graduation, Education"
-                            ref={tags} 
+                            value={tagInput}
+                            onChange={(e) => setTagInput(e.currentTarget.value)} 
                         />
                         </label>
                     </div>
