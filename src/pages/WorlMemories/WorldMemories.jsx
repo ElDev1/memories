@@ -8,6 +8,7 @@ import { Skeleton } from "../../Components/Skeleton/Skeleton"
 export const WorldMemories = () => {
 
   const [memoriesList, setMemoriesList] = useState([])
+  const [allMemories, setAllMemories] = useState([])
   const [loading, setLoading] = useState(false) 
 
   useEffect(() => {
@@ -15,6 +16,7 @@ export const WorldMemories = () => {
     getMemories()
       .then(data => {
         setMemoriesList(data)
+        setAllMemories(data)
         setLoading(false)
       })
 
@@ -39,8 +41,8 @@ export const WorldMemories = () => {
           </div>
         ) : (
           <div className="flex mt-20">
-            <Sidebar memoriesList={memoriesList} setMemoriesList={setMemoriesList} />
-            <CardsContainer memoriesList={memoriesList}/>
+            <Sidebar memoriesList={memoriesList} allMemories={allMemories} setMemoriesList={setMemoriesList} />
+            <CardsContainer memoriesList={memoriesList} setAllMemories={setAllMemories} />
           </div>
         )
       }

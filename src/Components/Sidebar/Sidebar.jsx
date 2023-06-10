@@ -1,13 +1,15 @@
-import { AiFillPicture, AiOutlineTags } from 'react-icons/ai'
+import { AiFillPicture } from 'react-icons/ai'
 import { AiOutlineUser } from 'react-icons/ai'
 import { AiOutlineHeart } from 'react-icons/ai'
-import { useRef, useState, useEffect } from 'react'
+import { useState } from 'react'
 import { getMemories } from '../../services/firebase'
 
-export const Sidebar = ( {memoriesList, setMemoriesList} ) => {
+export const Sidebar = ( {memoriesList, setMemoriesList, allMemories} ) => {
 
   const [tagInput, setTagInput] = useState('')
   const [nameInput, setNameInput] = useState('')
+
+  console.log(allMemories, 'all memories')
 
   const handleFilterTags = (e) => {
     e.preventDefault()
@@ -26,32 +28,27 @@ export const Sidebar = ( {memoriesList, setMemoriesList} ) => {
   }
 
   const handleFilterLikes = () => {
-    getMemories()
-      .then(data => {
-        setMemoriesList(data)
-      })
-      .then(() => {
         const user = localStorage.getItem('email')
         const filteredMemories = memoriesList.filter(memorie => memorie.likedBy.includes(user))
         setMemoriesList(filteredMemories)
-      })
   }
 
   const handleFilterNames = (e) => {
-    e.preventDefault()
+    setNameInput(e.currentTarget.value)
 
-    getMemories()
-    .then(data => {
-      setMemoriesList(data)
-    })
-    .then(() => {
-      const filteredMemories = memoriesList.filter(memorie => memorie.createdBy.userName.toLowerCase().includes(nameInput.toLowerCase()))
-      setMemoriesList(filteredMemories)      
-    })
+    if(nameInput === '') {
+      setMemoriesList(allMemories)
+      return
+    }
+
+    const filteredMemories = allMemories.filter(memorie => memorie.createdBy.userName.toLowerCase().includes(nameInput.toLowerCase()))
+    
+    setMemoriesList(filteredMemories) 
   }
 
   const handleAllMemories = () => {
-    getMemories().then(res => setMemoriesList(res))
+    console.log(allMemories, 'all memories')
+    setMemoriesList(allMemories)
   }
 
   return (
@@ -83,38 +80,6 @@ export const Sidebar = ( {memoriesList, setMemoriesList} ) => {
                 </div>
               </div>
             </li>
-            {/* <li className='focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-cyan-500'>
-              <div className="relative flex flex-row items-center h-11 pr-6">
-                <div className="inline-flex justify-center items-center ml-4">
-                  <AiOutlineTags />
-                  <span className="ml-2 text-sm tracking-wide truncate">Search by tags</span>
-                </div>
-              </div>
-                <div className="pr-10 pl-3 ">
-                  <form onSubmit={handleFilterTags}>
-                    <label>
-                    <input
-                        type="text"
-                        name="title"
-                        className="
-                            w-full
-                            block px-4 py-2 mt-2
-                            border-gray-300
-                            rounded-md
-                            text-gray-400
-                            shadow-sm
-                            focus:border-indigo-300
-                            focus:ring
-                            focus:ring-indigo-200
-                            focus:ring-opacity-50
-                        "
-                        value={tagInput}
-                        onChange={(e) => setTagInput(e.currentTarget.value)}
-                    />
-                    </label>
-                  </form>
-              </div>
-            </li> */}
             <li className='focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-cyan-500'>
               <div className="relative flex flex-row items-center h-11 pr-6">
                 <div className="inline-flex justify-center items-center ml-4">
@@ -123,28 +88,26 @@ export const Sidebar = ( {memoriesList, setMemoriesList} ) => {
                 </div>
               </div>
                 <div className="pr-10 pl-3">
-                  <form onSubmit={handleFilterNames}>
-                    <label>
-                    <input
-                        type="text"
-                        name="title"
-                        className="
-                            w-full
-                            block px-4 py-2 mt-2
-                            border-gray-300
-                            rounded-md
-                            text-gray-400
-                            shadow-sm
-                            focus:border-indigo-300
-                            focus:ring
-                            focus:ring-indigo-200
-                            focus:ring-opacity-50
-                        "
-                        value={nameInput}
-                        onChange={(e) => setNameInput(e.currentTarget.value)}
-                    />
-                    </label>
-                  </form>
+                  <label>
+                  <input
+                      type="text"
+                      name="title"
+                      className="
+                          w-full
+                          block px-4 py-2 mt-2
+                          border-gray-300
+                          rounded-md
+                          text-gray-400
+                          shadow-sm
+                          focus:border-indigo-300
+                          focus:ring
+                          focus:ring-indigo-200
+                          focus:ring-opacity-50
+                      "
+                      value={nameInput}
+                      onChange={handleFilterNames}
+                  />
+                  </label>
               </div>
             </li>
           </ul>
