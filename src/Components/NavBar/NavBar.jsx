@@ -15,8 +15,8 @@ export const NavBar = () => {
     return (
         <div className="fixed w-full z-10 top-0">
             <div className="bg-white shadow">
-                <div className="container mx-auto px-4">
-                    <div className="flex items-center justify-between py-4">
+                <div className="">
+                    <div className="w-full flex items-center justify-between py-4 px-4">
                         <div>
                             <img src={require('../../img/logo.png')} alt='logo' width='100px' height='50px' />
                             </div>

@@ -4,44 +4,25 @@ import { AiOutlineHeart } from 'react-icons/ai'
 import { useState } from 'react'
 import { getMemories } from '../../services/firebase'
 
-export const Sidebar = ( {memoriesList, setMemoriesList, allMemories} ) => {
-
-  const [tagInput, setTagInput] = useState('')
-  const [nameInput, setNameInput] = useState('')
-
+export const Sidebar = ( {setMemoriesList, allMemories} ) => {
   console.log(allMemories, 'all memories')
 
-  const handleFilterTags = (e) => {
-    e.preventDefault()
-
-    getMemories()
-    .then(res => {
-      setMemoriesList(res)
-      return memoriesList
-    })
-    .then((res) => {
-      console.log('lista de memorias', memoriesList)
-      const filteredMemories = res.filter(memorie => memorie.tags.includes(tagInput.toLowerCase()))
-      setMemoriesList(filteredMemories)  
-      setTagInput('')
-    })
-  }
 
   const handleFilterLikes = () => {
         const user = localStorage.getItem('email')
-        const filteredMemories = memoriesList.filter(memorie => memorie.likedBy.includes(user))
-        setMemoriesList(filteredMemories)
+        getMemories().then(data => {
+          const filteredMemories = data.filter(memorie => memorie.likedBy.includes(user))
+          setMemoriesList(filteredMemories)
+        })
   }
 
   const handleFilterNames = (e) => {
-    setNameInput(e.currentTarget.value)
-
-    if(nameInput === '') {
+    if(e.currentTarget.value === '') {
       setMemoriesList(allMemories)
       return
     }
 
-    const filteredMemories = allMemories.filter(memorie => memorie.createdBy.userName.toLowerCase().includes(nameInput.toLowerCase()))
+    const filteredMemories = allMemories.filter(memorie => memorie.createdBy.userName.toLowerCase().includes(e.currentTarget.value.toLowerCase()))
     
     setMemoriesList(filteredMemories) 
   }
@@ -104,7 +85,6 @@ export const Sidebar = ( {memoriesList, setMemoriesList, allMemories} ) => {
                           focus:ring-indigo-200
                           focus:ring-opacity-50
                       "
-                      value={nameInput}
                       onChange={handleFilterNames}
                   />
                   </label>

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { updateMemorie, getMemories } from "../../services/firebase";
 
 
-export const Card = ({createdBy, id, date, image, likedBy, likes, tags, text, title, myMemories, handleDelete, setAllMemories}) => {
+export const Card = ({createdBy, id, date, image, likedBy, likes, tags, text, title, myMemories, handleDelete}) => {
   const [count, setCount] = useState(likes);
   const [alreadyLiked, setAlreadyLiked] = useState(false)
   const navigate = useNavigate()
@@ -41,7 +41,7 @@ export const Card = ({createdBy, id, date, image, likedBy, likes, tags, text, ti
   }
 
   return (
-    <div className="max-w-lg ml-10 rounded overflow-hidden shadow-lg bg-white ">
+    <div className="max-w-lg mb-5 rounded overflow-hidden shadow-lg bg-white ">
       <div className="w-full h-80" style={{backgroundImage: `url(${image})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat',backgroundPosition: 'center'}}>
         <div className="bg-black/50 inline-block rounded-lg p-2 m-2">
           <p className="text-white">{createdBy.userName}</p>
